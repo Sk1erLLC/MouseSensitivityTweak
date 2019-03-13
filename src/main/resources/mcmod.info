@@ -1,0 +1,16 @@
+[
+{
+  "modid": "mouse_sensitivity_tweak",
+  "name": "Mouse Sensitivity Tweak",
+  "description": "Allows independent customization of X and Y mouse sensitivity",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Sk1er","FalseHonesty"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
