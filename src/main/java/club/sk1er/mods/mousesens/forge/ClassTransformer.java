@@ -2,6 +2,7 @@ package club.sk1er.mods.mousesens.forge;
 
 import club.sk1er.mods.mousesens.transform.FramesTransformer;
 import club.sk1er.mods.mousesens.transform.impl.EntityRendererTransformer;
+import club.sk1er.mods.mousesens.transform.impl.GuiOptionsTransformer;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.launchwrapper.IClassTransformer;
@@ -21,8 +22,7 @@ public final class ClassTransformer implements IClassTransformer {
 
     public ClassTransformer() {
         this.registerTransformer(new EntityRendererTransformer());
-
-        // full class transformers
+        this.registerTransformer(new GuiOptionsTransformer());
     }
 
     private void registerTransformer(FramesTransformer transformer) {

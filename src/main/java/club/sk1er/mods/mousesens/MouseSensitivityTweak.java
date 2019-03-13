@@ -1,11 +1,16 @@
 package club.sk1er.mods.mousesens;
 
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraftforge.fml.common.DummyModContainer;
 import net.minecraftforge.fml.common.ModMetadata;
 
 import java.util.Collections;
+import java.util.List;
 
 public class MouseSensitivityTweak extends DummyModContainer {
+
+    private static float mouseSensativity = .5F;
 
     public MouseSensitivityTweak() {
         super(getMetaData());
@@ -26,8 +31,8 @@ public class MouseSensitivityTweak extends DummyModContainer {
         return metadata;
     }
 
-    private static float getMouseSensitivity() {
-        return .1F;
+    public static float getMouseSensitivity() {
+        return mouseSensativity;
     }
 
     @SuppressWarnings("unused")
@@ -36,4 +41,20 @@ public class MouseSensitivityTweak extends DummyModContainer {
         return v * v * v * 8.0F;
     }
 
+    public static void applyGuiChanges(List<GuiButton> buttonList, int width, int height) {
+        int max = 0;
+        for (GuiButton guiButton : buttonList) {
+            max = Math.max(guiButton.id, max);
+            if (guiButton.id == GameSettings.Options.SENSITIVITY.ordinal()) {
+                guiButton.setWidth(70);
+            }
+        }
+        max++;
+        buttonList.add(new YSensSlider(max, width / 2 - 155 + 160 + 70, height / 6 - 12 + 24 * 2));
+
+    }
+
+    public static void setSensitivity(float f) {
+        mouseSensativity = f;
+    }
 }
