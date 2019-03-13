@@ -1,6 +1,5 @@
 package club.sk1er.mods.mousesens;
 
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.DummyModContainer;
 import net.minecraftforge.fml.common.ModMetadata;
 
@@ -27,16 +26,14 @@ public class MouseSensitivityTweak extends DummyModContainer {
         return metadata;
     }
 
-    public static float getMouseSensitivity() {
+    private static float getMouseSensitivity() {
         return .1F;
     }
 
-    public static float getSensitivityX() {
-        return Minecraft.getMinecraft().gameSettings.mouseSensitivity * 0.6F + 0.2F;
-    }
-
+    @SuppressWarnings("unused")
     public static float getSensitivityY() {
-        return getMouseSensitivity() * 0.6F + 0.2F;
+        float v = getMouseSensitivity() * 0.1F + 0.2F;
+        return v * v * v * 8.0F;
     }
 
 }

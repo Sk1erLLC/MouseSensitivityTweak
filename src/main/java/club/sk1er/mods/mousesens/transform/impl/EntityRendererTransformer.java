@@ -12,6 +12,7 @@ import org.objectweb.asm.tree.LdcInsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
+import scala.reflect.NameTransformer;
 
 import java.util.ListIterator;
 
@@ -52,18 +53,25 @@ public final class EntityRendererTransformer implements FramesTransformer {
 	private InsnList generateFirst() {
 		InsnList insnList = new InsnList();
 
-		insnList.add(new MethodInsnNode(
-				Opcodes.INVOKESTATIC,
-				"club/sk1er/mods/mousesens/MouseSensitivityTweak",
-				"getMouseSensitivity", "()F", false
-		));
-		insnList.add(new VarInsnNode(Opcodes.FSTORE, 7));
+//		insnList.add(new MethodInsnNode(
+//				Opcodes.INVOKESTATIC,
+//				"club/sk1er/mods/mousesens/MouseSensitivityTweak",
+//				"getSensitivityX", "()F", false
+//		));
+//		insnList.add(new VarInsnNode(Opcodes.FSTORE, 7));
 
+
+		insnList.add(new VarInsnNode(Opcodes.ALOAD,0));
+		insnList.add(new FieldInsnNode(Opcodes.GETFIELD,"net/minecraft/client/renderer/EntityRenderer","mc","Lnet/minecraft/client/Minecraft;"));
+		insnList.add(new FieldInsnNode(Opcodes.GETFIELD,"net/minecraft/client/Minecraft","mouseHelper","Lnet/minecraft/util/MouseHelper;"));
+		insnList.add(new FieldInsnNode(Opcodes.GETFIELD,"net/minecraft/util/MouseHelper","deltaY","I"));
+		insnList.add(new InsnNode(Opcodes.I2F));
 		insnList.add(new MethodInsnNode(
 				Opcodes.INVOKESTATIC,
 				"club/sk1er/mods/mousesens/MouseSensitivityTweak",
 				"getSensitivityY", "()F", false
 		));
+		insnList.add(new InsnNode(Opcodes.FMUL));
 		insnList.add(new VarInsnNode(Opcodes.FSTORE, 8));
 
 		return insnList;
