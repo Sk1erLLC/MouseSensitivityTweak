@@ -14,19 +14,21 @@ import org.objectweb.asm.tree.VarInsnNode;
 
 import java.util.ListIterator;
 
+import static club.sk1er.mods.mousesens.MouseSensitivityTweak.OBF;
+
 public final class GuiOptionsTransformer implements FramesTransformer {
 
 	@Override
 	public String[] getClassNames() {
-		return new String[]{"net.minecraft.client.gui.GuiOptions"};
+		return new String[]{"net.minecraft.client.gui.GuiControls"};
 	}
 
 	@Override
 	public void transform(ClassNode classNode, String name) {
 		for (MethodNode method : classNode.methods) {
-			if (method.name.equalsIgnoreCase("initGui")) {
-			    System.out.println("Hooked GuiOptions#initGui");
-				method.instructions.insertBefore(method.instructions.getLast(),generateFirst());
+            if (method.name.equalsIgnoreCase("initGui") || method.name.equalsIgnoreCase("func_73866_w_") || method.name.equalsIgnoreCase("b") && method.desc.equalsIgnoreCase("()V")) {
+			    System.out.println("Hooked GuiControls#initGui via" + method.name);
+				method.instructions.insertBefore(method.instructions.getLast().getPrevious(),generateFirst());
 
             }
 		}
@@ -39,17 +41,16 @@ public final class GuiOptionsTransformer implements FramesTransformer {
             */
 	private InsnList generateFirst() {
 		InsnList insnList = new InsnList();
-
-
-
 		insnList.add(new VarInsnNode(Opcodes.ALOAD,0));
-        insnList.add(new FieldInsnNode(Opcodes.GETFIELD,"net/minecraft/client/gui/GuiOptions","buttonList","Ljava/util/List;"));
-        insnList.add(new FieldInsnNode(Opcodes.GETFIELD,"net/minecraft/client/gui/GuiOptions","width","I"));
-        insnList.add(new FieldInsnNode(Opcodes.GETFIELD,"net/minecraft/client/gui/GuiOptions","height","I"));
+        insnList.add(new FieldInsnNode(Opcodes.GETFIELD,"net/minecraft/client/gui/GuiControls",OBF ? "field_146292_n": "buttonList","Ljava/util/List;"));
+        insnList.add(new VarInsnNode(Opcodes.ALOAD,0));
+        insnList.add(new FieldInsnNode(Opcodes.GETFIELD,"net/minecraft/client/gui/GuiControls",OBF ? "field_146294_l": "width","I"));
+        insnList.add(new VarInsnNode(Opcodes.ALOAD,0));
+        insnList.add(new FieldInsnNode(Opcodes.GETFIELD,"net/minecraft/client/gui/GuiControls",OBF ? "field_146295_m": "height","I"));
 		insnList.add(new MethodInsnNode(
 				Opcodes.INVOKESTATIC,
 				"club/sk1er/mods/mousesens/MouseSensitivityTweak",
-				"applyGuiChanges", "(Ljava/util/List;,I,I)V", false
+				"applyGuiChanges", "(Ljava/util/List;II)V", false
 		));
 		return insnList;
 	}

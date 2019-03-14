@@ -3,7 +3,11 @@ package club.sk1er.mods.mousesens;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.stream.TwitchStream;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -16,9 +20,9 @@ public class YSensSlider extends GuiButton {
 
 
     public YSensSlider(int p_i45017_1_, int p_i45017_2_, int p_i45017_3_) {
-        super(p_i45017_1_, p_i45017_2_, p_i45017_3_, 70, 20, "");
+        super(p_i45017_1_, p_i45017_2_, p_i45017_3_, 100, 20, "");
         this.sliderValue = MouseSensitivityTweak.getMouseSensitivity();
-        this.displayString = "Y Sensitivity";
+        this.displayString = getDisplay();
     }
 
     /**
@@ -33,7 +37,7 @@ public class YSensSlider extends GuiButton {
     private float valueStep = 0.0F;
     public float snapToStepClamp(float p_148268_1_) {
         p_148268_1_ = this.snapToStep(p_148268_1_);
-        return MathHelper.clamp_float(p_148268_1_, this.valueMin, this.valueMax);
+        return clamp_float(p_148268_1_, this.valueMin, this.valueMax);
     }
 
     protected float snapToStep(float p_148264_1_) {
@@ -45,11 +49,11 @@ public class YSensSlider extends GuiButton {
     }
 
     public float denormalizeValue(float p_148262_1_) {
-        return this.snapToStepClamp(this.valueMin + (this.valueMax - this.valueMin) * MathHelper.clamp_float(p_148262_1_, 0.0F, 1.0F));
+        return this.snapToStepClamp(this.valueMin + (this.valueMax - this.valueMin) * clamp_float(p_148262_1_, 0.0F, 1.0F));
     }
     public float normalizeValue(float p_148266_1_)
     {
-        return MathHelper.clamp_float((this.snapToStepClamp(p_148266_1_) - this.valueMin) / (this.valueMax - this.valueMin), 0.0F, 1.0F);
+        return clamp_float((this.snapToStepClamp(p_148266_1_) - this.valueMin) / (this.valueMax - this.valueMin), 0.0F, 1.0F);
     }
     /**
      * Fired when the mouse button is dragged. Equivalent of MouseListener.mouseDragged(MouseEvent e).
@@ -58,11 +62,11 @@ public class YSensSlider extends GuiButton {
         if (this.visible) {
             if (this.dragging) {
                 this.sliderValue = (float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8);
-                this.sliderValue = MathHelper.clamp_float(this.sliderValue, 0.0F, 1.0F);
+                this.sliderValue = clamp_float(this.sliderValue, 0.0F, 1.0F);
                 float f = denormalizeValue(this.sliderValue);
                 MouseSensitivityTweak.setSensitivity(f);
                 this.sliderValue = normalizeValue(f);
-                this.displayString = "Y Sensitivity";
+                this.displayString = getDisplay();
             }
 
             mc.getTextureManager().bindTexture(buttonTextures);
@@ -79,14 +83,18 @@ public class YSensSlider extends GuiButton {
     public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
         if (super.mousePressed(mc, mouseX, mouseY)) {
             this.sliderValue = (float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8);
-            this.sliderValue = MathHelper.clamp_float(this.sliderValue, 0.0F, 1.0F);
+            this.sliderValue = clamp_float(this.sliderValue, 0.0F, 1.0F);
             MouseSensitivityTweak.setSensitivity(denormalizeValue(this.sliderValue));
-            this.displayString = "Y Sensitivity";
+            this.displayString = getDisplay();
             this.dragging = true;
             return true;
         } else {
             return false;
         }
+    }
+    public static float clamp_float(float num, float min, float max)
+    {
+        return num < min ? min : (num > max ? max : num);
     }
 
     /**
@@ -94,5 +102,12 @@ public class YSensSlider extends GuiButton {
      */
     public void mouseReleased(int mouseX, int mouseY) {
         this.dragging = false;
+    }
+
+    public String getDisplay() {
+        float f = sliderValue;
+        String s ="Y Sensitivity: ";
+        return (f == 0.0F ? s + I18n.format("options.sensitivity.min") : (f == 1.0F ? s + I18n.format("options.sensitivity.max" ) : s + (int)(f * 200.0F) + "%"));
+
     }
 }
