@@ -1,8 +1,8 @@
 package club.sk1er.mods.mousesens.transform.impl;
 
 import club.sk1er.mods.mousesens.transform.FramesTransformer;
+import cpw.mods.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
@@ -28,7 +28,7 @@ public final class EntityRendererTransformer implements FramesTransformer {
     public EntityRendererTransformer() {
         obfPairs.add("func_181560_a");
         obfPairs.add("func_78480_b");
-        varStore.put("1.8", 6);
+        varStore.put("1.7.10", 6);
     }
 
     @Override

@@ -1,16 +1,12 @@
 package club.sk1er.mods.mousesens;
 
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiNewChat;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.client.stream.TwitchStream;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class YSensSlider extends GuiButton {
@@ -25,13 +21,8 @@ public class YSensSlider extends GuiButton {
         this.displayString = getDisplay();
     }
 
-    /**
-     * Returns 0 if the button is disabled, 1 if the mouse is NOT hovering over this button and 2 if it IS hovering over
-     * this button.
-     */
-    protected int getHoverState(boolean mouseOver) {
-        return 0;
-    }
+
+
     private float valueMin=0.0F;
     private float valueMax = 1.0F;
     private float valueStep = 0.0F;
@@ -55,6 +46,11 @@ public class YSensSlider extends GuiButton {
     {
         return clamp_float((this.snapToStepClamp(p_148266_1_) - this.valueMin) / (this.valueMax - this.valueMin), 0.0F, 1.0F);
     }
+    public int getHoverState(boolean p_146114_1_)
+    {
+        return 0;
+    }
+
     /**
      * Fired when the mouse button is dragged. Equivalent of MouseListener.mouseDragged(MouseEvent e).
      */
@@ -69,8 +65,8 @@ public class YSensSlider extends GuiButton {
                 this.displayString = getDisplay();
             }
 
-            mc.getTextureManager().bindTexture(buttonTextures);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+//            mc.getTextureManager().bindTexture(buttonTextures);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.drawTexturedModalRect(this.xPosition + (int) (this.sliderValue * (float) (this.width - 8)), this.yPosition, 0, 66, 4, 20);
             this.drawTexturedModalRect(this.xPosition + (int) (this.sliderValue * (float) (this.width - 8)) + 4, this.yPosition, 196, 66, 4, 20);
         }

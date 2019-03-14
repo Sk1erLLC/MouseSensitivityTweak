@@ -2,13 +2,13 @@ package club.sk1er.mods.mousesens;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import cpw.mods.fml.common.DummyModContainer;
+import cpw.mods.fml.common.LoadController;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.ModMetadata;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraftforge.fml.common.DummyModContainer;
-import net.minecraftforge.fml.common.LoadController;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ModMetadata;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedWriter;
@@ -57,11 +57,11 @@ public class MouseSensitivityTweak extends DummyModContainer {
         for (GuiButton guiButton : buttonList) {
             max = Math.max(guiButton.id, max);
             if (guiButton.id == GameSettings.Options.SENSITIVITY.ordinal()) {
-                guiButton.setWidth(100);
+                guiButton.width=100;
                 guiButton.xPosition = width / 2 - 52;
             }
             if (guiButton.id == GameSettings.Options.INVERT_MOUSE.ordinal()) {
-                guiButton.setWidth(100);
+                guiButton.width=100;
             }
         }
         for (GuiButton guiButton : buttonList) {

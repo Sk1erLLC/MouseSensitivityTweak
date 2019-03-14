@@ -9,12 +9,10 @@ buildscript {
         }
     }
     dependencies {
-//        classpath 'net.minecraftforge.gradle:ForgeGradle:2.0-SNAPSHOT' //Forge 1.8
-                classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT' //Forge 1.8.8+
-
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
     }
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'forge'
 
 /*
 // for people who want stable - not yet functional for MC 1.8.8 - we require the forgegradle 2.1 snapshot
@@ -24,7 +22,7 @@ plugins {
 */
 version = "1.0"
 group = "club.sk1er.mods.xysense" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "[1.8+] Sk1er Mouse Sensitivity Tweak"
+archivesBaseName = "[1.7.10] Sk1er Mouse Sensitivity Tweak"
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 minecraft {
@@ -32,14 +30,15 @@ minecraft {
 //    version = "1.8-11.14.4.1577"
 //    mappings = "snapshot_20141130"
 
-    version = "1.8.8-11.15.0.1655" //1.8.8
-    mappings = "snapshot_20151122"
+//    version = "1.8.8-11.15.0.1655" //1.8.8
+//    mappings = "snapshot_20151122"
 
+    version = "1.7.10-10.13.4.1614-1.7.10"
 
     runDir = "run"
     
     // the mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   snapshot are built nightly.
+    // snapshot_YYYYMMDD
     // stable_#            stables are built at the discretion of the MCP team.
     // Use non-default mappings at your own risk. they may not allways work.
     // simply re-run your setup task after changing the mappings to update your workspace.
@@ -76,19 +75,10 @@ processResources
     }
 }
 jar {
-    from configurations.provided.asFileTree.files.collect {
-        zipTree(it)
-    }
-
     manifest {
-        attributes "FMLCorePlugin": "club.sk1er.mods.mousesens.forge.FMLLoadingPlugin", "ModSide": "CLIENT"
+        attributes "FMLCorePlugin": "club.sk1er.mods.mousesens.forge.FMLLoadingPlugin", "ModSide": "CLIENT",'FMLCorePluginContainsMod': 'true'
 
     }
     
-}
-configurations {
-    provided
-    // Make compile extend from our provided configuration so that things added to bundled end up on the compile classpath
-    compile.extendsFrom(provided)
 }
 

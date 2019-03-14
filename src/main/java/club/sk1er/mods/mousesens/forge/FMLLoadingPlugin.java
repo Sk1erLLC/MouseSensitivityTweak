@@ -1,7 +1,7 @@
 package club.sk1er.mods.mousesens.forge;
 
 import club.sk1er.mods.mousesens.MouseSensitivityTweak;
-import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
 import java.util.Map;
 
