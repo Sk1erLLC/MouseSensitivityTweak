@@ -53,7 +53,6 @@ public final class EntityRendererTransformer implements FramesTransformer {
                 while (iterator.hasNext()) {
                     AbstractInsnNode node = iterator.next();
                     if (node instanceof FieldInsnNode) {
-                        //(((FieldInsnNode) node).name.equalsIgnoreCase("deltaY") || ((FieldInsnNode) node).name.equalsIgnoreCase("field_74375_b") || (((FieldInsnNode) node).name.equalsIgnoreCase("b") && ((FieldInsnNode) node).owner.equalsIgnoreCase(FMLDeobfuscatingRemapper.INSTANCE.unmap("net.minecraft.util.MouseHelper"))))
                         String fieldSearge = FMLDeobfuscatingRemapper.INSTANCE.mapFieldName(((FieldInsnNode) node).owner, ((FieldInsnNode) node).name, ((FieldInsnNode) node).desc);
                         if (fieldSearge.equalsIgnoreCase("field_74375_b") || fieldSearge.equalsIgnoreCase("deltaY")) {
                             AbstractInsnNode next = node.getNext().getNext().getNext().getNext();
@@ -66,18 +65,14 @@ public final class EntityRendererTransformer implements FramesTransformer {
 
 
                 }
-            }//TODO obfuscation
+            }
         }
     }
 
 
     /*
-               Store var 'f' (5) with new value from Y sensitivity
-               Recalculate 'f1' (6) with 'f' value
-               Let it use the new f1 value to mod the Y sensitivity
-            */
-
-
+        Recalculate 'f3' (6 / 8) with 'deltaY' * MouseSensitivityTweak#getSensitivityY
+    */
     private InsnList generateFirst() {
         InsnList insnList = new InsnList();
         insnList.add(new VarInsnNode(Opcodes.ALOAD, 0));
@@ -94,15 +89,9 @@ public final class EntityRendererTransformer implements FramesTransformer {
         String version = MinecraftForge.MC_VERSION;
 
 
-        Integer key = varStore.getOrDefault(version,8);
-        if (key == null || key == 0) {
-            System.out.println("MouseSensitivityTweak could not identify mappings. Please contact Sk1er for help.");
-            return new InsnList();
-        } else {
-            System.out.println("Detecting mapped version: " + version+" with FSTORE " + 8);
-            insnList.add(new VarInsnNode(Opcodes.FSTORE, key));
-        }
-
+        Integer key = varStore.getOrDefault(version, 8);
+        System.out.println("Detecting mapped version: " + version + " with FSTORE " + 8);
+        insnList.add(new VarInsnNode(Opcodes.FSTORE, key));
 
         return insnList;
     }

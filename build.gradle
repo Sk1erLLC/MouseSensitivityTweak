@@ -10,7 +10,7 @@ buildscript {
     }
     dependencies {
 //        classpath 'net.minecraftforge.gradle:ForgeGradle:2.0-SNAPSHOT' //Forge 1.8
-                classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT' //Forge 1.8.8
+                classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT' //Forge 1.8.8+
 
     }
 }
